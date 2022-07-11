@@ -15,6 +15,13 @@ class Feature extends Model
         'enabled' => 'boolean',
     ];
 
+    /**
+     * > If all of the features in the array are enabled, return true
+     *
+     * @param string|string[] $features This is the feature key or an array of feature keys.
+     *
+     * @return bool A collection of features that are enabled.
+     */
     public static function isEnabled($features): bool
     {
         if (is_string($features)) {
@@ -27,5 +34,17 @@ class Feature extends Model
                     return $feature->enabled;
                 })
                 ->count() === count($features);
+    }
+
+    /**
+     * > Returns true if any of the given features are disabled
+     *
+     * @param string|string[] $features The features to check.
+     *
+     * @return bool A boolean value.
+     */
+    public static function isDisabled($features): bool
+    {
+        return !self::isEnabled($features);
     }
 }
