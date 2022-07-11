@@ -2,8 +2,12 @@
 
 namespace CrixuAMG\FeatureControl\Models;
 
-class Feature
+use Illuminate\Database\Eloquent\Model;
+
+class Feature extends Model
 {
+    protected $guarded = [];
+
     public static function isEnabled($features): bool
     {
         if (is_string($features)) {
