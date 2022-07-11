@@ -1,0 +1,16 @@
+{
+    "name": "crixuamg/laravel-feature-control",
+    "description": "Manage feature states easily within your Laravel application",
+    "autoload": {
+        "psr-4": {
+            "Crixuamg\\FeatureControl\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Christian Kaal",
+            "email": "christiankaal@gmail.com"
+        }
+    ],
+    "require": {}
+}
