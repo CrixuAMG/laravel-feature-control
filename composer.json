@@ -1,16 +1,26 @@
 {
-    "name": "crixuamg/laravel-feature-control",
-    "description": "Manage feature states easily within your Laravel application",
-    "autoload": {
-        "psr-4": {
-            "Crixuamg\\FeatureControl\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Christian Kaal",
-            "email": "christiankaal@gmail.com"
-        }
-    ],
-    "require": {}
+  "name": "crixuamg/laravel-feature-control",
+  "description": "Manage feature states easily within your Laravel application",
+  "autoload": {
+    "psr-4": {
+      "CrixuAMG\\FeatureControl\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Christian Kaal",
+      "email": "christiankaal@gmail.com"
+    }
+  ],
+  "require": {},
+  "extra": {
+    "laravel": {
+      "providers": [
+        "CrixuAMG\\FeatureControl\\FeatureControlServiceProvider"
+      ],
+      "aliases": {
+        "FeatureControl": "CrixuAMG\\FeatureControl\\FeatureControlFacade"
+      }
+    }
+  }
 }
