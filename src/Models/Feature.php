@@ -3,10 +3,17 @@
 namespace CrixuAMG\FeatureControl\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Feature extends Model
 {
+    use SoftDeletes;
+
     protected $guarded = [];
+
+    protected $casts = [
+        'enabled' => 'boolean',
+    ];
 
     public static function isEnabled($features): bool
     {
