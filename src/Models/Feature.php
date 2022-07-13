@@ -13,14 +13,15 @@ class Feature extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'enabled' => 'boolean',
+        'enabled'           => 'boolean',
+        'roll_out_per_user' => 'boolean',
     ];
 
     /**
      * > It updates or creates a new state with the given key and enabled value
      *
-     * @param string key The key of the state.
-     * @param bool enabled true/false
+     * @param  string key The key of the state.
+     * @param  bool enabled true/false
      *
      * @return Feature The state of the key.
      */
@@ -51,8 +52,8 @@ class Feature extends Model
 
         return self::whereIn('key', $features)->get()
                 ->filter(function (Feature $feature) {
-                    if (auth()->check() && auth()->user()->hasAccessToFeature($feature)) {
-                        return true;
+                    if ($feature->roll_out_per_user) {
+                        return auth()->check() && auth()->user()->hasAccessToFeature($feature);
                     }
 
                     return $feature->enabled;
@@ -75,10 +76,12 @@ class Feature extends Model
     /**
      * For each user in the collection, call the `enableAccessToFeature` method on that user.
      *
-     * @param Collection users An array of users or a collection of users.
+     * @param  Collection users An array of users or a collection of users.
      */
     public function rollOutToUsers(array|Collection $users)
     {
+        throw_unless($this->roll_out_per_user, 'Feature cannot be rolled out to specific users.');
+
         if (!is_a($users, Collection::class)) {
             $users = collect($users);
         }
@@ -89,10 +92,12 @@ class Feature extends Model
     /**
      * "For each user in the collection, revoke their access to this feature."
      *
-     * @param Collection users An array or collection of users to be granted access to the feature.
+     * @param  Collection users An array or collection of users to be granted access to the feature.
      */
     public function rollBackUsers(array|Collection $users)
     {
+        throw_unless($this->roll_out_per_user, 'Feature cannot be revoked from specific users.');
+
         if (!is_a($users, Collection::class)) {
             $users = collect($users);
         }

@@ -15,18 +15,21 @@ trait HasAccessToFeatures
     /**
      * > If the feature is a feature object, get the key, then check if the user has access to that feature
      *
-     * @param $feature The feature you want to check access to. This can be a string or a Feature object.
+     * @param  string|Feature  $feature  The feature you want to check access to. This can be a string or a Feature object.
      *
      * @return bool A boolean value.
      */
-    public function hasAccessToFeature($feature): bool
+    public function hasAccessToFeature(string|Feature $feature): bool
     {
-        if ($feature instanceof Feature) {
-            /* @var $feature Feature */
-            $feature = $feature->key;
+        if (!$feature instanceof Feature) {
+            $feature = Feature::where('key', $feature)->firstOrFail();
         }
 
-        return $this->features()->where('key', $feature)->exists();
+        if ($feature->roll_out_per_user) {
+            return $this->features()->where('id', $feature->id)->exists();
+        }
+
+        return $feature->enabled;
     }
 
     /**
@@ -51,17 +54,13 @@ trait HasAccessToFeatures
     }
 
     /**
-     * "If the user doesn't have access to the feature, give them access to it."
+     * If the user has access to the feature, return true. Otherwise, attach the feature to the user.
      *
-     * The first thing we do is check if the feature is an instance of the Feature model. If it isn't, we'll try to find it
-     * by its key. If we can't find it, we'll throw an exception
+     * @param Feature|string $feature The feature you want to enable access to.
      *
-     * @param feature The feature you want to enable access to. This can be a Feature object or a string of the feature's
-     * key.
-     *
-     * @return bool|null A boolean value.
+     * @return ?bool A boolean value.
      */
-    public function enableAccessToFeature($feature): ?bool
+    public function enableAccessToFeature(string|Feature $feature): ?bool
     {
         if (!$feature instanceof Feature) {
             $feature = Feature::where('key', $feature)->firstOrFail();
