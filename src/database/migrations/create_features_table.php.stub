@@ -21,6 +21,11 @@ class CreateFeaturesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('feature_user', function (Blueprint $table) {
+            $table->foreignId('feature_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id');
+        });
     }
 
     /**
@@ -30,6 +35,7 @@ class CreateFeaturesTable extends Migration
      */
     public function down()
     {
+        Schema::drop('feature_user');
         Schema::drop('features');
     }
 }
