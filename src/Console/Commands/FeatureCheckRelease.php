@@ -2,7 +2,6 @@
 
 namespace CrixuAMG\FeatureControl\Console\Commands;
 
-use CrixuAMG\FeatureControl\FeatureControl;
 use CrixuAMG\FeatureControl\FeatureControl\FeatureControl;
 use Illuminate\Console\Command;
 
