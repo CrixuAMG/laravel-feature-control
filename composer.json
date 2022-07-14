@@ -18,9 +18,6 @@
       "providers": [
         "CrixuAMG\\FeatureControl\\FeatureControlServiceProvider"
       ],
-      "aliases": {
-        "FeatureControl": "CrixuAMG\\FeatureControl\\FeatureControlFacade"
-      }
     }
   }
 }
