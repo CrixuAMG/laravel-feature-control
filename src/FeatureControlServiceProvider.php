@@ -2,6 +2,8 @@
 
 namespace CrixuAMG\FeatureControl;
 
+use CrixuAMG\FeatureControl\Console\Commands\FeatureCheckRelease;
+use CrixuAMG\FeatureControl\Console\Commands\FeatureMakeCommand;
 use Illuminate\Support\ServiceProvider;
 
 class FeatureControlServiceProvider extends ServiceProvider
@@ -13,6 +15,20 @@ class FeatureControlServiceProvider extends ServiceProvider
     {
         $this->registerConfig();
         $this->registerMigrations();
+        $this->registerCommands();
+    }
+
+    /**
+     * Register console commands
+     */
+    private function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                FeatureMakeCommand::class,
+                FeatureCheckRelease::class,
+            ]);
+        }
     }
 
     /**

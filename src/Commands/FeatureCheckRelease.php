@@ -12,7 +12,7 @@ class FeatureCheckRelease extends Command
      *
      * @var string
      */
-    protected $signature = 'data-migration:migrate';
+    protected $signature = 'feature-control:release:check';
 
     /**
      * The console command description.
