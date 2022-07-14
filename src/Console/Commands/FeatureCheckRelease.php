@@ -2,6 +2,7 @@
 
 namespace CrixuAMG\FeatureControl\Console\Commands;
 
+use CrixuAMG\FeatureControl\Services\FeatureControl;
 use Illuminate\Console\Command;
 
 class FeatureCheckRelease extends Command

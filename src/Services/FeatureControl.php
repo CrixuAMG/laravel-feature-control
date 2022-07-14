@@ -13,9 +13,9 @@ class FeatureControl
 {
     public static function checkReleases()
     {
-        $dataMigrations = self::getFeatures();
+        $features = self::getFeatures();
 
-        foreach ($dataMigrations as $feature) {
+        foreach ($features as $feature) {
             /** @var AbstractFeature $feature */
             $featureInstance = new $feature();
 
