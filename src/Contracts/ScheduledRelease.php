@@ -1,6 +1,6 @@
 <?php
 
-namespace Crixuamg\FeatureControl\Contracts;
+namespace CrixuAMG\FeatureControl\Contracts;
 
 interface ScheduledRelease
 {

@@ -2,7 +2,7 @@
 
 namespace CrixuAMG\FeatureControl;
 
-use Crixuamg\FeatureControl\Services\AbstractFeature;
+use CrixuAMG\FeatureControl\Services\AbstractFeature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use RecursiveDirectoryIterator;

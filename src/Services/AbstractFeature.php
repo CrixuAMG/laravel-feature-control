@@ -1,6 +1,6 @@
 <?php
 
-namespace Crixuamg\FeatureControl\Services;
+namespace CrixuAMG\FeatureControl\Services;
 
 use CrixuAMG\FeatureControl\FeatureControl;
 
