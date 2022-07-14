@@ -76,11 +76,15 @@ class Feature extends Model
     /**
      * For each user in the collection, call the `enableAccessToFeature` method on that user.
      *
-     * @param  Collection users An array of users or a collection of users.
+     * @param  int|array|Collection  $users
      */
-    public function rollOutToUsers(array|Collection $users)
+    public function rollOutToUsers(int|array|Collection $users)
     {
         throw_unless($this->roll_out_per_user, 'Feature cannot be rolled out to specific users.');
+
+        if (is_int($users)) {
+            $users = config('feature-control.user_model')::inRandomOrder()->take($users)->get();
+        }
 
         if (!is_a($users, Collection::class)) {
             $users = collect($users);
@@ -92,11 +96,15 @@ class Feature extends Model
     /**
      * "For each user in the collection, revoke their access to this feature."
      *
-     * @param  Collection users An array or collection of users to be granted access to the feature.
+     * @param  int|array|Collection  $users
      */
-    public function rollBackUsers(array|Collection $users)
+    public function rollBackUsers(int|array|Collection $users)
     {
         throw_unless($this->roll_out_per_user, 'Feature cannot be revoked from specific users.');
+
+        if (is_int($users)) {
+            $users = config('feature-control.user_model')::inRandomOrder()->take($users)->get();
+        }
 
         if (!is_a($users, Collection::class)) {
             $users = collect($users);

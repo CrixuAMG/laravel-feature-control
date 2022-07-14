@@ -1,0 +1,10 @@
+<?php
+
+namespace DummyNamespace;
+
+use CrixuAMG\FeatureControl\Services\AbstractFeature;
+
+class DummyClass extends AbstractFeature
+{
+    //
+}

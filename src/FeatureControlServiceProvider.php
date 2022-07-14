@@ -11,6 +11,7 @@ class FeatureControlServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerConfig();
         $this->registerMigrations();
     }
 
@@ -25,5 +26,11 @@ class FeatureControlServiceProvider extends ServiceProvider
                 __DIR__.'/database/migrations/create_features_table.php.stub' => $this->app->databasePath()."/migrations/{$timestamp}_create_features_table.php",
             ], 'migrations');
         }
+    }
+
+    private function registerConfig()
+    {
+        // Automatically apply the package configuration
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'feature-control.php');
     }
 }
