@@ -2,8 +2,6 @@
 
 namespace CrixuAMG\FeatureControl\Services;
 
-use CrixuAMG\FeatureControl\FeatureControl;
-
 abstract class AbstractFeature
 {
     abstract public function getKey(): string;

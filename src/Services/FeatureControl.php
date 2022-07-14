@@ -1,6 +1,6 @@
 <?php
 
-namespace CrixuAMG\FeatureControl\FeatureControl;
+namespace CrixuAMG\FeatureControl\Services;
 
 use CrixuAMG\FeatureControl\Services\AbstractFeature;
 use Illuminate\Console\Command;
@@ -13,11 +13,11 @@ class FeatureControl
 {
     public static function checkReleases()
     {
-        $dataMigrations = self::getDataMigrations();
+        $dataMigrations = self::getFeatures();
 
         foreach ($dataMigrations as $feature) {
             /** @var AbstractFeature $feature */
-            $featureInstance = new $feature($command);
+            $featureInstance = new $feature();
 
             if ($featureInstance->shouldRelease()) {
                 $featureInstance->release();
@@ -25,9 +25,9 @@ class FeatureControl
         }
     }
 
-    private static function getDataMigrations()
+    private static function getFeatures()
     {
-        $path = base_path().'/app/DataMigrations';
+        $path = base_path().'/app/FeatureControl';
         $features = [];
 
         if (!File::exists($path)) {
