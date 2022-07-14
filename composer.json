@@ -17,7 +17,7 @@
     "laravel": {
       "providers": [
         "CrixuAMG\\FeatureControl\\FeatureControlServiceProvider"
-      ],
+      ]
     }
   }
 }
