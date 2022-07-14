@@ -1,6 +1,6 @@
 <?php
 
-namespace CrixuAMG\FeatureControl;
+namespace CrixuAMG\FeatureControl\FeatureControl;
 
 use CrixuAMG\FeatureControl\Services\AbstractFeature;
 use Illuminate\Console\Command;
@@ -11,7 +11,7 @@ use RegexIterator;
 
 class FeatureControl
 {
-    public static function migrate(Command $command)
+    public static function checkReleases()
     {
         $dataMigrations = self::getDataMigrations();
 
@@ -19,7 +19,9 @@ class FeatureControl
             /** @var AbstractFeature $feature */
             $featureInstance = new $feature($command);
 
-            if ($featureInstance->shouldRelease()) $featureInstance->release();
+            if ($featureInstance->shouldRelease()) {
+                $featureInstance->release();
+            }
         }
     }
 

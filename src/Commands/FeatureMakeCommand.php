@@ -13,7 +13,7 @@ class FeatureMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'feature:make';
+    protected $name = 'feature-control:make';
     /**
      * The console command description.
      *

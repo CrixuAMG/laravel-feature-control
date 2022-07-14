@@ -3,6 +3,7 @@
 namespace CrixuAMG\FeatureControl\Console\Commands;
 
 use CrixuAMG\FeatureControl\FeatureControl;
+use CrixuAMG\FeatureControl\FeatureControl\FeatureControl;
 use Illuminate\Console\Command;
 
 class FeatureCheckRelease extends Command
@@ -38,10 +39,7 @@ class FeatureCheckRelease extends Command
      */
     public function handle()
     {
-        FeatureControl::migrate(
-            // Send the current instance to the migrator, so it can output information to the console
-            $this
-        );
+        FeatureControl::checkReleases();
 
         return 0;
     }
