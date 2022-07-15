@@ -48,7 +48,7 @@ class FeatureControlServiceProvider extends ServiceProvider
     {
         // Automatically apply the package configuration
         $this->publishes([
-            __DIR__.'/../config/config.php' => 'feature-control.php'
+            __DIR__.'/../config/config.php' => config_path('feature-control.php')
         ]);
     }
 }
