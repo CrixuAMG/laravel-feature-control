@@ -47,6 +47,8 @@ class FeatureControlServiceProvider extends ServiceProvider
     private function registerConfig()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'feature-control.php');
+        $this->publishes([
+            __DIR__.'/../config/config.php' => 'feature-control.php'
+        ]);
     }
 }
