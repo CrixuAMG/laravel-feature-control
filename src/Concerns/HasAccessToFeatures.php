@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasAccessToFeatures
 {
+    public function boot()
+    {
+        parent::boot();
+
+        static::created(fn($user) => $this->enableOlderFeaturesForUser($user));
+    }
+
     public function features(): BelongsToMany
     {
         return $this->belongsToMany(Feature::class);
@@ -56,7 +63,7 @@ trait HasAccessToFeatures
     /**
      * If the user has access to the feature, return true. Otherwise, attach the feature to the user.
      *
-     * @param Feature|string $feature The feature you want to enable access to.
+     * @param  Feature|string  $feature  The feature you want to enable access to.
      *
      * @return ?bool A boolean value.
      */
@@ -71,5 +78,11 @@ trait HasAccessToFeatures
         }
 
         return $this->features()->attach($feature);
+    }
+
+    protected function enableOlderFeaturesForUser($user)
+    {
+        // TODO
+        \Log::info('Roll out features to user '.$user->id);
     }
 }
