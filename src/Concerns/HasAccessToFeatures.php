@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasAccessToFeatures
 {
-    public function boot()
+    public static function boot()
     {
         parent::boot();
 
