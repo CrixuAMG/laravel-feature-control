@@ -14,7 +14,7 @@ class CreateFeaturesTable extends Migration
     public function up()
     {
         Schema::create('features', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('key')->unique();
             $table->text('description')->nullable();
             $table->boolean('enabled')->default(false);
