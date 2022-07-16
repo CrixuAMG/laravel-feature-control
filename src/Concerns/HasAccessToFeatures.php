@@ -11,7 +11,7 @@ trait HasAccessToFeatures
     {
         parent::boot();
 
-        static::created(fn($user) => $this->enableOlderFeaturesForUser($user));
+        static::created(fn($user) => self::enableOlderFeaturesForUser($user));
     }
 
     public function features(): BelongsToMany
@@ -80,7 +80,7 @@ trait HasAccessToFeatures
         return $this->features()->attach($feature);
     }
 
-    protected function enableOlderFeaturesForUser($user)
+    protected static function enableOlderFeaturesForUser($user)
     {
         // TODO
         \Log::info('Roll out features to user '.$user->id);
