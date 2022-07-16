@@ -83,7 +83,12 @@ class Feature extends Model
         throw_unless($this->roll_out_per_user, 'Feature cannot be rolled out to specific users.');
 
         if (is_int($users)) {
-            $users = config('feature-control.user_model')::inRandomOrder()->take($users)->get();
+            $users = config('feature-control.user_model')::whereDoesntHave('features', function ($query) {
+                $query->where('key', $this->key);
+            })
+                ->inRandomOrder()
+                ->take($users)
+                ->get();
         }
 
         if (!is_a($users, Collection::class)) {
@@ -103,7 +108,12 @@ class Feature extends Model
         throw_unless($this->roll_out_per_user, 'Feature cannot be revoked from specific users.');
 
         if (is_int($users)) {
-            $users = config('feature-control.user_model')::inRandomOrder()->take($users)->get();
+            $users = config('feature-control.user_model')::whereHas('features', function ($query) {
+                $query->where('key', $this->key);
+            })
+                ->inRandomOrder()
+                ->take($users)
+                ->get();
         }
 
         if (!is_a($users, Collection::class)) {

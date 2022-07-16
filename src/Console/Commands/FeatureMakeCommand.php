@@ -69,6 +69,12 @@ class FeatureMakeCommand extends GeneratorCommand
     {
         $stub = parent::replaceClass($stub, $name);
 
+        $stub = str_replace(
+            'DummyFeaturePlaceholder',
+            strtolower(implode(' ', \Str::of($this->getNameInput())->ucsplit()->toArray())),
+            $stub
+        );
+
         return str_replace([
             'RootNamespace\\',
             'dummy:command',

@@ -8,6 +8,6 @@ class DummyClass extends AbstractFeature
 {
     public function getKey(): string
     {
-        // TODO: Implement getKey() method.
+        return 'DummyFeaturePlaceholder';
     }
 }
