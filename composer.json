@@ -1,6 +1,7 @@
 {
   "name": "crixuamg/laravel-feature-control",
   "description": "Manage feature states easily within your Laravel application",
+  "license": "MIT",
   "autoload": {
     "psr-4": {
       "CrixuAMG\\FeatureControl\\": "src/"
