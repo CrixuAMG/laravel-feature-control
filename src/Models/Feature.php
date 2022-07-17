@@ -12,6 +12,10 @@ class Feature extends Model
 
     protected $guarded = [];
 
+    protected $dates = [
+        'released_at',
+    ];
+
     protected $casts = [
         'enabled'           => 'boolean',
         'roll_out_per_user' => 'boolean',

@@ -19,6 +19,7 @@ class CreateFeaturesTable extends Migration
             $table->text('description')->nullable();
             $table->boolean('enabled')->default(false);
             $table->boolean('roll_out_per_user')->default(false);
+            $table->dateTime('released_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
