@@ -80,9 +80,17 @@ trait HasAccessToFeatures
         return $this->features()->attach($feature);
     }
 
+    /**
+     * "Enable all features that are enabled and have roll out per user enabled for the given user."
+     *
+     * @param $user The user to enable the feature for.
+     */
     protected static function enableOlderFeaturesForUser($user)
     {
-        // TODO
-        \Log::info('Roll out features to user '.$user->id);
+        /** @var HasAccessToFeatures $user */
+        Feature::where('enabled', true)
+            ->where('roll_out_per_user', true)
+            ->get()
+            ->each(fn(Feature $feature) => $user->enableAccessToFeature($feature));
     }
 }
