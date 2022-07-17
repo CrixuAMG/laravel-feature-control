@@ -36,16 +36,13 @@ abstract class AbstractFeature
      */
     public function release()
     {
-        $feature = $this->getFeature();
         $interfaces = collect(class_implements(get_called_class()));
+        $feature = $this->getFeature() ?: Feature::create([
+            'key'               => $this->getKey(),
+            'roll_out_per_user' => $interfaces->contains(ScheduledRelease::class),
+        ]);
 
-        if (!$feature || $feature->enabled) {
-            Feature::create([
-                'key'               => $this->getKey(),
-                'released_at'      => now(),
-                'roll_out_per_user' => $interfaces->contains(ScheduledRelease::class),
-            ]);
-
+        if ($feature->enabled) {
             return;
         }
 
@@ -66,20 +63,7 @@ abstract class AbstractFeature
 
             if ($interfaces->contains(ReleasesInWaves::class)) {
                 /** @var ReleasesInWaves $this */
-                $lastRelease = $feature->released_at;
-                $intervalType = $this->waveIntervalPeriod()->value;
-                $interval = $this->waveInterval();
-
-                $interval = [
-                                WaveInterval::INTERVAL_MINUTES->value => $interval * 1,
-                                WaveInterval::INTERVAL_HOURS->value   => $interval * 60,
-                                WaveInterval::INTERVAL_DAYS->value    => $interval * 24 * 60,
-                                WaveInterval::INTERVAL_WEEKS->value   => $interval * 7 * 24 * 60,
-                            ][$intervalType];
-
-                dd($this->releaseAtDate()->diffInMinutes($feature->released_at), $this->releaseAtDate()->diffInMinutes($feature->released_at) - $interval, $interval, $intervalType);
-
-                if ($this->releaseAtDate()->diffInMinutes($feature->released_at) % $interval !== 0) {
+                if ($feature->released_at && $feature->released_at->diffInMinutes(now()) - $this->calculateInterval() < 0) {
                     return;
                 }
 
@@ -93,8 +77,23 @@ abstract class AbstractFeature
         }
 
         return $feature->update([
-            'enabled'      => true,
+            'enabled'     => true,
             'released_at' => now(),
         ]);
+    }
+
+    /**
+     * > It returns the number of minutes between each wave
+     *
+     * @return int The number of minutes between each wave.
+     */
+    private function calculateInterval(): int
+    {
+        return $this->waveInterval() * [
+                                           WaveInterval::INTERVAL_MINUTES->value => 1,
+                                           WaveInterval::INTERVAL_HOURS->value   => 60,
+                                           WaveInterval::INTERVAL_DAYS->value    => 24 * 60,
+                                           WaveInterval::INTERVAL_WEEKS->value   => 7 * 24 * 60,
+                                       ][$this->waveIntervalPeriod()->value];
     }
 }
