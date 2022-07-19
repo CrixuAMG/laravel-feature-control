@@ -39,14 +39,14 @@ abstract class AbstractFeature
         $interfaces = collect(class_implements(get_called_class()));
         $feature = $this->getFeature() ?: Feature::create([
             'key'               => $this->getKey(),
-            'roll_out_per_user' => $interfaces->contains(ScheduledRelease::class),
+            'scheduled_release' => $interfaces->contains(ScheduledRelease::class),
         ]);
 
         if ($feature->enabled) {
             return;
         }
 
-        if ($feature->roll_out_per_user) {
+        if ($feature->scheduled_release) {
             /** @var ScheduledRelease $this */
             throw_unless(
                 $interfaces->contains(ScheduledRelease::class),

@@ -32,7 +32,7 @@ trait HasAccessToFeatures
             $feature = Feature::where('key', $feature)->firstOrFail();
         }
 
-        if ($feature->roll_out_per_user) {
+        if ($feature->scheduled_release) {
             return $this->features()->where('id', $feature->id)->exists();
         }
 
@@ -89,7 +89,7 @@ trait HasAccessToFeatures
     {
         /** @var HasAccessToFeatures $user */
         Feature::where('enabled', true)
-            ->where('roll_out_per_user', true)
+            ->where('scheduled_release', true)
             ->get()
             ->each(fn(Feature $feature) => $user->enableAccessToFeature($feature));
     }

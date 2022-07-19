@@ -18,7 +18,7 @@ class Feature extends Model
 
     protected $casts = [
         'enabled'           => 'boolean',
-        'roll_out_per_user' => 'boolean',
+        'scheduled_release' => 'boolean',
     ];
 
     /**
@@ -56,7 +56,7 @@ class Feature extends Model
 
         return self::whereIn('key', $features)->get()
                 ->filter(function (Feature $feature) {
-                    if ($feature->roll_out_per_user) {
+                    if ($feature->scheduled_release) {
                         return auth()->check() && auth()->user()->hasAccessToFeature($feature);
                     }
 
@@ -84,7 +84,7 @@ class Feature extends Model
      */
     public function rollOutToUsers(int|array|Collection $users)
     {
-        throw_unless($this->roll_out_per_user, 'Feature cannot be rolled out to specific users.');
+        throw_unless($this->scheduled_release, 'Feature cannot be rolled out to specific users.');
 
         if (is_int($users)) {
             $users = config('feature-control.user_model')::whereDoesntHave('features', function ($query) {
@@ -109,7 +109,7 @@ class Feature extends Model
      */
     public function rollBackUsers(int|array|Collection $users)
     {
-        throw_unless($this->roll_out_per_user, 'Feature cannot be revoked from specific users.');
+        throw_unless($this->scheduled_release, 'Feature cannot be revoked from specific users.');
 
         if (is_int($users)) {
             $users = config('feature-control.user_model')::whereHas('features', function ($query) {
