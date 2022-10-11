@@ -4,6 +4,8 @@ namespace CrixuAMG\FeatureControl;
 
 use CrixuAMG\FeatureControl\Console\Commands\FeatureCheckRelease;
 use CrixuAMG\FeatureControl\Console\Commands\FeatureMakeCommand;
+use CrixuAMG\FeatureControl\Http\Controllers\Api\FeatureController;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class FeatureControlServiceProvider extends ServiceProvider
@@ -16,6 +18,7 @@ class FeatureControlServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerMigrations();
         $this->registerCommands();
+        $this->registerRoutes();
     }
 
     /**
@@ -48,7 +51,20 @@ class FeatureControlServiceProvider extends ServiceProvider
     {
         // Automatically apply the package configuration
         $this->publishes([
-            __DIR__.'/../config/config.php' => config_path('feature-control.php')
+            __DIR__.'/../config/config.php' => config_path('feature-control.php'),
         ]);
+    }
+
+    private function registerRoutes()
+    {
+        Route::macro(
+            'features',
+            function (string $routePath = 'definition') {
+                return Route::apiResource($routePath, FeatureController::class)
+                    ->only([
+                        'index',
+                    ]);
+            }
+        );
     }
 }
