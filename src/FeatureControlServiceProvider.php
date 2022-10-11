@@ -59,7 +59,7 @@ class FeatureControlServiceProvider extends ServiceProvider
     {
         Route::macro(
             'features',
-            function (string $routePath = 'definition') {
+            function (string $routePath = 'features') {
                 return Route::apiResource($routePath, FeatureController::class)
                     ->only([
                         'index',
