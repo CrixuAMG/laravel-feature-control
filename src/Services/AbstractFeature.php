@@ -11,6 +11,11 @@ abstract class AbstractFeature
 {
     abstract public function getKey(): string;
 
+    public function getDescription(): ?string
+    {
+        //
+    }
+
     protected function getFeature(): ?Feature
     {
         return Feature::where('key', $this->getKey())->first();
@@ -41,6 +46,12 @@ abstract class AbstractFeature
             'key'               => $this->getKey(),
             'scheduled_release' => $interfaces->contains(ScheduledRelease::class),
         ]);
+
+        if ($feature->description !== $this->getDescription()) {
+            $feature->update([
+                'description' => $this->getDescription(),
+            ]);
+        }
 
         if ($feature->enabled) {
             return;
