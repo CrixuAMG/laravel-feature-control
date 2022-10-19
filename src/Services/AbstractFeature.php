@@ -13,7 +13,7 @@ abstract class AbstractFeature
 
     public function getDescription(): ?string
     {
-        //
+        return null;
     }
 
     protected function getFeature(): ?Feature
