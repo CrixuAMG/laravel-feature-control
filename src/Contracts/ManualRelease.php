@@ -2,7 +2,7 @@
 
 namespace CrixuAMG\FeatureControl\Contracts;
 
-class ManualRelease
+interface ManualRelease
 {
 
 }
