@@ -2,6 +2,7 @@
 
 namespace CrixuAMG\FeatureControl\Services;
 
+use CrixuAMG\FeatureControl\Contracts\ManualRelease;
 use CrixuAMG\FeatureControl\Contracts\ReleasesInWaves;
 use CrixuAMG\FeatureControl\Contracts\ScheduledRelease;
 use CrixuAMG\FeatureControl\Enums\WaveInterval;
@@ -53,7 +54,7 @@ abstract class AbstractFeature
             ]);
         }
 
-        if ($feature->enabled) {
+        if ($feature->enabled || $interfaces->contains(ManualRelease::class)) {
             return;
         }
 
