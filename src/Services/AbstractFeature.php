@@ -64,7 +64,7 @@ abstract class AbstractFeature
         }
 
         if ($feature->enabled || $interfaces->contains(ManualRelease::class)) {
-            return;
+            return false;
         }
 
         if ($feature->scheduled_release) {
@@ -75,7 +75,7 @@ abstract class AbstractFeature
             );
 
             if (now() < $this->releaseAtDate()) {
-                return;
+                return false;
             }
 
             $amount = config('feature-control.user_model')::whereDoesntHave('features', function ($query) {
@@ -85,7 +85,7 @@ abstract class AbstractFeature
             if ($interfaces->contains(ReleasesInWaves::class)) {
                 /** @var ReleasesInWaves $this */
                 if ($feature->released_at && $feature->released_at->diffInMinutes(now()) - $this->calculateInterval() < 0) {
-                    return;
+                    return false;
                 }
 
                 $feature->update([
