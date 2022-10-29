@@ -20,6 +20,7 @@ class CreateFeaturesTable extends Migration
             $table->boolean('enabled')->default(false);
             $table->boolean('scheduled_release')->default(false);
             $table->dateTime('released_at')->nullable();
+            $table->boolean('retired')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
