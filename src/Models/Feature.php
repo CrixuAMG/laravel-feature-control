@@ -18,6 +18,7 @@ class Feature extends Model
 
     protected $casts = [
         'enabled'           => 'boolean',
+        'retired'           => 'boolean',
         'scheduled_release' => 'boolean',
     ];
 

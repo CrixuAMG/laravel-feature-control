@@ -4,6 +4,7 @@ namespace CrixuAMG\FeatureControl\Services;
 
 use CrixuAMG\FeatureControl\Contracts\ManualRelease;
 use CrixuAMG\FeatureControl\Contracts\ReleasesInWaves;
+use CrixuAMG\FeatureControl\Contracts\RetiringFeature;
 use CrixuAMG\FeatureControl\Contracts\ScheduledRelease;
 use CrixuAMG\FeatureControl\Enums\WaveInterval;
 use CrixuAMG\FeatureControl\Models\Feature;
@@ -38,15 +39,23 @@ abstract class AbstractFeature
      *
      * The first thing we do is get the feature. If it doesn't exist, or it's already enabled, we return
      *
-     * @return The return value of the update method.
+     * @return bool|null return value of the update method.
      */
-    public function release()
+    public function release(): ?bool
     {
         $interfaces = collect(class_implements(get_called_class()));
         $feature = $this->getFeature() ?: Feature::create([
             'key'               => $this->getKey(),
             'scheduled_release' => $interfaces->contains(ScheduledRelease::class),
         ]);
+
+        if ($interfaces->contains(RetiringFeature::class)) {
+            /** @var RetiringFeature $this */
+            $retiresOption = $this->retires();
+            if ($retiresOption !== null && $retiresOption >= now()) {
+                $feature->retired = true;
+            }
+        }
 
         if ($feature->description !== $this->getDescription()) {
             $feature->update([

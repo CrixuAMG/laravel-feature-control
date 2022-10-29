@@ -9,8 +9,11 @@ class FeatureController
 {
     public function index()
     {
+        $method = request()->per_page > 0 ? 'paginate' : 'get';
+
         return FeatureResource::collection(
-            request()->per_page > 0 ? Feature::paginate() : Feature::all()
+            Feature::where('retired', false)
+                ->$method()
         );
     }
 }
