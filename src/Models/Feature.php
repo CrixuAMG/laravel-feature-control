@@ -2,9 +2,9 @@
 
 namespace CrixuAMG\FeatureControl\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
 
 class Feature extends Model
 {
@@ -25,8 +25,8 @@ class Feature extends Model
     /**
      * > It updates or creates a new state with the given key and enabled value
      *
-     * @param  string key The key of the state.
-     * @param  bool enabled true/false
+     * @param string key The key of the state.
+     * @param bool enabled true/false
      *
      * @return Feature The state of the key.
      */
@@ -45,14 +45,14 @@ class Feature extends Model
     /**
      * > If all of the features in the array are enabled, return true
      *
-     * @param  string|string[]  $features  This is the feature key or an array of feature keys.
+     * @param string|string[] $features This is the feature key or an array of feature keys.
      *
      * @return bool A collection of features that are enabled.
      */
     public static function isEnabled($features): bool
     {
         if (is_string($features)) {
-            $features = (array) $features;
+            $features = (array)$features;
         }
 
         return self::whereIn('key', $features)->get()
@@ -69,7 +69,7 @@ class Feature extends Model
     /**
      * > Returns true if any of the given features are disabled
      *
-     * @param  string|string[]  $features  The features to check.
+     * @param string|string[] $features The features to check.
      *
      * @return bool A boolean value.
      */
@@ -79,9 +79,10 @@ class Feature extends Model
     }
 
     /**
-     * For each user in the collection, call the `enableAccessToFeature` method on that user.
+     * It takes a collection of users and enables access to the feature for each of them
      *
-     * @param  int|array|Collection  $users
+     * @param int|array|Collection $users This can be an integer, an array of user ids, or a collection of users. If
+     *                                    it's an integer, it will randomly select that many users from the database.
      */
     public function rollOutToUsers(int|array|Collection $users)
     {
@@ -104,9 +105,14 @@ class Feature extends Model
     }
 
     /**
-     * "For each user in the collection, revoke their access to this feature."
+     * "Remove the feature from the specified users."
      *
-     * @param  int|array|Collection  $users
+     * The function accepts a single user, an array of users, or a collection of users. If an integer is passed, it
+     * will
+     * randomly select that many users from the database
+     *
+     * @param int|array|Collection $users This can be an integer, an array of user IDs, or a collection of users. If
+     *                                    it's an integer, it will randomly select that many users from the database.
      */
     public function rollBackUsers(int|array|Collection $users)
     {
