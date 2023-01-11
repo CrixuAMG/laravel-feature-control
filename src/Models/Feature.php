@@ -86,7 +86,7 @@ class Feature extends Model
      */
     public function rollOutToUsers(int|array|Collection $users)
     {
-        throw_unless($this->scheduled_release, 'Feature cannot be rolled out to specific users.');
+        // throw_unless($this->scheduled_release, 'Feature cannot be rolled out to specific users.');
 
         if (is_int($users)) {
             $users = config('feature-control.user_model')::whereDoesntHave('features', function ($query) {
@@ -116,7 +116,7 @@ class Feature extends Model
      */
     public function rollBackUsers(int|array|Collection $users)
     {
-        throw_unless($this->scheduled_release, 'Feature cannot be revoked from specific users.');
+        // throw_unless($this->scheduled_release, 'Feature cannot be revoked from specific users.');
 
         if (is_int($users)) {
             $users = config('feature-control.user_model')::whereHas('features', function ($query) {
