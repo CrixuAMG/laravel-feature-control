@@ -32,8 +32,8 @@ trait HasAccessToFeatures
             $feature = Feature::where('key', $feature)->firstOrFail();
         }
 
-        if ($feature->scheduled_release) {
-            return $this->features()->where('id', $feature->id)->exists();
+        if ($exists = $this->features()->where('id', $feature->id)->exists()) {
+            return $exists;
         }
 
         return $feature->enabled;
