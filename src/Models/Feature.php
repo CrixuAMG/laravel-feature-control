@@ -101,7 +101,11 @@ class Feature extends Model
             $users = collect($users);
         }
 
-        $users->each->enableAccessToFeature($this);
+        $users->each(function ($user) {
+            if (!$user->hasAccessToFeature($this)) {
+                $user->enableAccessToFeature($this);
+            }
+        });
     }
 
     /**
@@ -131,6 +135,10 @@ class Feature extends Model
             $users = collect($users);
         }
 
-        $users->each->revokeAccessToFeature($this);
+        $users->each(function ($user) {
+            if ($user->hasAccessToFeature($this)) {
+                $user->revokeAccessToFeature($this);
+            }
+        });
     }
 }
