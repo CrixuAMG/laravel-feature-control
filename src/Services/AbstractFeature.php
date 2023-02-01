@@ -21,7 +21,17 @@ abstract class AbstractFeature
 
     protected function getFeature(): ?Feature
     {
-        return Feature::where('key', $this->getKey())->first();
+        $interfaces = $this->contracts();
+        $feature = Feature::where('key', $this->getKey())->first();
+        $releaseIsScheduled = $interfaces->contains(ScheduledRelease::class);
+        
+        if ($feature->scheduled_release !== $releaseIsScheduled) {
+            $feature->update([
+                'scheduled_release' => $releaseIsScheduled,
+            ]);
+        }
+        
+        return $feature;
     }
 
     /**
