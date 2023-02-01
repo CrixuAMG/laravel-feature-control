@@ -25,7 +25,7 @@ abstract class AbstractFeature
         $feature = Feature::where('key', $this->getKey())->first();
         $releaseIsScheduled = $interfaces->contains(ScheduledRelease::class);
         
-        if ($feature?->scheduled_release !== $releaseIsScheduled) {
+        if ($feature && $feature->scheduled_release !== $releaseIsScheduled) {
             $feature->update([
                 'scheduled_release' => $releaseIsScheduled,
             ]);
