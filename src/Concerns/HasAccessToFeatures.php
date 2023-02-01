@@ -36,7 +36,7 @@ trait HasAccessToFeatures
             return $exists;
         }
 
-        return $feature->enabled;
+        return !!$feature->enabled;
     }
 
     /**
