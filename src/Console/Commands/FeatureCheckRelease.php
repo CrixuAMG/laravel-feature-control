@@ -12,7 +12,7 @@ class FeatureCheckRelease extends Command
      *
      * @var string
      */
-    protected $signature = 'feature-control:release:check';
+    protected $signature = 'feature:release';
 
     /**
      * The console command description.
