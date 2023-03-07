@@ -22,6 +22,13 @@ class Feature extends Model
         'scheduled_release' => 'boolean',
     ];
 
+    private static $cache = [];
+
+    public static function resetCache()
+    {
+        self::$cache = [];
+    }
+
     /**
      * > It updates or creates a new state with the given key and enabled value
      *
@@ -51,11 +58,16 @@ class Feature extends Model
      */
     public static function isEnabled($features): bool
     {
+        $featureKey = json_encode($features);
+        if (array_key_exists($featureKey, self::$cache)) {
+            return self::$cache[$featureKey];
+        }
+
         if (is_string($features)) {
             $features = (array)$features;
         }
 
-        return self::whereIn('key', $features)->get()
+        $featureCheck = self::whereIn('key', $features)->get()
                 ->filter(function (Feature $feature) {
                     if ($feature->scheduled_release) {
                         return auth()->check() && auth()->user()->hasAccessToFeature($feature);
@@ -64,6 +76,10 @@ class Feature extends Model
                     return $feature->enabled;
                 })
                 ->count() === count($features);
+
+        self::$cache[$featureKey] = $featureCheck;
+
+        return $featureCheck;
     }
 
     /**
@@ -86,8 +102,6 @@ class Feature extends Model
      */
     public function rollOutToUsers(int|array|Collection $users)
     {
-        // throw_unless($this->scheduled_release, 'Feature cannot be rolled out to specific users.');
-
         if (is_int($users)) {
             $users = config('feature-control.user_model')::whereDoesntHave('features', function ($query) {
                 $query->where('key', $this->key);
@@ -120,8 +134,6 @@ class Feature extends Model
      */
     public function rollBackUsers(int|array|Collection $users)
     {
-        // throw_unless($this->scheduled_release, 'Feature cannot be revoked from specific users.');
-
         if (is_int($users)) {
             $users = config('feature-control.user_model')::whereHas('features', function ($query) {
                 $query->where('key', $this->key);
