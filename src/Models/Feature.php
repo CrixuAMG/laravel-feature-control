@@ -29,6 +29,11 @@ class Feature extends Model
         self::$cache = [];
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(config('feature-control.user_model'));
+    }
+
     /**
      * > It updates or creates a new state with the given key and enabled value
      *
