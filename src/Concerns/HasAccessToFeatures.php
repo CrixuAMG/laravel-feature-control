@@ -67,13 +67,13 @@ trait HasAccessToFeatures
      *
      * @return ?bool A boolean value.
      */
-    public function enableAccessToFeature(string|Feature $feature, bool $ignoreEnabledState = false): ?bool
+    public function enableAccessToFeature(string|Feature $feature): ?bool
     {
         if (!$feature instanceof Feature) {
             $feature = Feature::where('key', $feature)->firstOrFail();
         }
 
-        if ($this->hasAccessToFeature($feature, $ignoreEnabledState)) {
+        if ($this->hasAccessToFeature($feature, true)) {
             return true;
         }
 
