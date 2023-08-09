@@ -26,7 +26,7 @@ trait HasAccessToFeatures
      *
      * @return bool A boolean value.
      */
-    public function hasAccessToFeature(string|Feature $feature): bool
+    public function hasAccessToFeature(string|Feature $feature, bool $ignoreEnabledState = false): bool
     {
         if (!$feature instanceof Feature) {
             $feature = Feature::where('key', $feature)->firstOrFail();
@@ -36,7 +36,7 @@ trait HasAccessToFeatures
             return $exists;
         }
 
-        return !!$feature->enabled;
+        return $ignoreEnabledState ? false : !!$feature->enabled;
     }
 
     /**
@@ -67,13 +67,13 @@ trait HasAccessToFeatures
      *
      * @return ?bool A boolean value.
      */
-    public function enableAccessToFeature(string|Feature $feature): ?bool
+    public function enableAccessToFeature(string|Feature $feature, bool $ignoreEnabledState = false): ?bool
     {
         if (!$feature instanceof Feature) {
             $feature = Feature::where('key', $feature)->firstOrFail();
         }
 
-        if ($this->hasAccessToFeature($feature)) {
+        if ($this->hasAccessToFeature($feature, $ignoreEnabledState)) {
             return true;
         }
 
